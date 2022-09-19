@@ -1,0 +1,14 @@
+services:
+  webserver:
+    image: xerohige/cx_airflow_worker
+    container_name: airflow
+    restart: always
+    environment:
+      - AIRFLOW__CORE__LOAD_EXAMPLES=0
+    volumes:
+      - ./dags:/root/airflow/dags
+      - ./data:/data
+
+    ports:
+      - "8080:8080"
+    command: bash -c "airflow db init && airflow users  create --role Admin --username admin --email admin --firstname admin --lastname admin --password admin && (airflow scheduler &) && airflow webserver"
